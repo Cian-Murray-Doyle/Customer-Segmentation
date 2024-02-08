@@ -48,3 +48,11 @@ If these libraries are not installed, they can be installed with the following c
 ```
 
 ## Cleaning the Data
+
+Before any algorithms are applied, the dataset needs to be cleaned.
+
+![Alt Text](images/na_vals_table.png)
+
+![Alt Text](images/outliers_table.png)
+
+![Alt Text](images/corr_matrix.png)
