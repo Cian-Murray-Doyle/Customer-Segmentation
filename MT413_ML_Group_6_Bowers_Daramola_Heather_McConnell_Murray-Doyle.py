@@ -13,7 +13,7 @@ from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 
 #Import and view dataset
-file_path = r"C:\Users\cian3\Downloads"
+file_path = r"data_set"
 file_name = r"\Onlineretail.csv"
 online_sales = pd.read_csv(file_path + file_name,
                            sep=",", encoding="ISO-8859-1", header=0,
