@@ -67,7 +67,7 @@ online_sales["InvoiceDate"] = pd.to_datetime(online_sales["InvoiceDate"],format=
 
 When using `online_sales.describe()` we see that some of our data is stored incorrectly. In our data `"CustomerID"` should not be a numeric value and `"InvoiceDate"` needs to be converted to date format.
 
-![](images/describe_data.png)
+![](images/describe_data.PNG)
 
 ### Outliers
 
