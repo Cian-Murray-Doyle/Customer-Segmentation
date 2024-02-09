@@ -214,4 +214,20 @@ The final step in preparing data for our algorithm is to standardize/bring data 
 
 ### N Clusters - Elbow Graph
 
+``` python
+cluster_range = [*range(2,11)]
+lst = []
+for i in cluster_range:
+    kmeans = KMeans(n_clusters=i,max_iter=50)
+    kmeans.fit(online_sales_rfm_scaled)
+    lst.append(kmeans.inertia_)
+
+plt.plot(lst,marker="o",linestyle=":",c="black")
+plt.title("Elbow Method",fontweight="bold")
+plt.xlabel("Number of Clusters",fontweight="bold")
+plt.ylabel("Inertia", fontweight="bold")
+plt.show()
+```
+
 ![](images/elbow_graph.png)
+
