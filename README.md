@@ -51,11 +51,11 @@ If these libraries are not installed, they can be installed with the following c
 
 Before any algorithms are applied, the dataset needs to be cleaned.
 
-![Alt Text](images/na_vals_table.png)
-
 ### Missing Values
 
 Some examples of dealing with missing values are; removing them completely, replacing them with the mean/median or inferring the missing values. Due to the k-means clustering's sensitivity to missing values, our example will opt to remove all missing values from the dataset.
+
+![Table of Missing Values](images/na_vals_table.png)
 
 ### Formatting
 
@@ -66,6 +66,8 @@ online_sales["InvoiceDate"] = pd.to_datetime(online_sales["InvoiceDate"],format=
 ```
 
 When using `online_sales.describe()` we see that some of our data is stored incorrectly. In our data `"CustomerID"` should not be a numeric value and `"InvoiceDate"` needs to be converted to date format.
+
+![](images/describe_data.png)
 
 ### Outliers
 
@@ -145,26 +147,12 @@ online_sales_rfm.columns = ["CustomerID", "Recency", "Frequency", "Monetary"]
 
 To improve the accuracy of the RFM analysis we will visualise the outliers with boxplots and then use the interquartile range method to remove outliers.
 
-``` python
-fig, axes = plt.subplots(nrows=1, ncols=3, figsize=(15,5))
-axes[0].boxplot(online_sales_rfm["Recency"], labels=["Recency"])
-axes[0].set_title("Recency")
-axes[1].boxplot(online_sales_rfm["Frequency"], labels=["Frequency"])
-axes[1].set_title("Frequency")
-axes[2].boxplot(online_sales_rfm["Monetary"], labels=["Monetary"])
-axes[2].set_title("Monetary")
-for ax in axes:
-    ax.set_xlabel("Feature", fontweight="bold")
-    ax.set_ylabel("Range", fontweight="bold")
-fig.suptitle("Outlier Distribution", fontweight="bold")
-plt.show()
-```
-
 ![](images/trpl_box_plt.png)
 
 #### Remove Outliers
 
 ``` python
+#Code Repeated for "Monetary"" and "Frequency"
 q1 = np.percentile(online_sales_rfm["Recency"],25)
 q3 = np.percentile(online_sales_rfm["Recency"],75)
 iqr = q3 - q1
@@ -173,24 +161,6 @@ upperiqr = q3 + 1.5* iqr
 online_sales_rfm = online_sales_rfm[(online_sales_rfm["Recency"] < upperiqr) & (
     online_sales_rfm["Recency"] > lowiqr)]
 
-
-q1 = np.percentile(online_sales_rfm["Frequency"],25)
-q3 = np.percentile(online_sales_rfm["Frequency"],75)
-iqr = q3 - q1
-lowiqr = q1 - 1.5 * iqr
-upperiqr = q3 + 1.5* iqr
-online_sales_rfm = online_sales_rfm[(online_sales_rfm["Frequency"] < upperiqr) & (
-    online_sales_rfm["Frequency"] > lowiqr)]
-
-q1 = np.percentile(online_sales_rfm["Monetary"],25)
-q3 = np.percentile(online_sales_rfm["Monetary"],75)
-iqr = q3 - q1
-lowiqr = q1 - 1.5 * iqr
-upperiqr = q3 + 1.5* iqr
-online_sales_rfm = online_sales_rfm[(online_sales_rfm["Monetary"] < upperiqr) & (
-    online_sales_rfm["Monetary"] > lowiqr)]
-online_sales_rfm["CustomerID"] = online_sales_rfm["CustomerID"].astype(str)
-print("Outliers removed from RFM table using IQR: ", original_len - len(online_sales_rfm))
 #Resetting and removing current index
 online_sales_rfm = online_sales_rfm.reset_index(drop=True)
 ```
@@ -231,3 +201,26 @@ plt.show()
 
 ![](images/elbow_graph.png)
 
+The optimal number of clusters is the point where the graph creates an "elbow", in our scenario 2 clusters would be too few so we will take 3 as our number of clusters.
+
+Next we will add the labels of each cluster back to our RFM table and visualise our clusters.
+
+![](images/rfm_cluster.png)
+
+![](images/3d_chart.png)
+
+## Analysing the Clusters
+
+We will use box plots to plot each `"ClusterID"` by `"Recency"`, `"Frequency"` and `"Monetary"` and gain insights about the behaviour of customers in each cluster.
+
+![](images/rec_cluster.png)
+
+We can see that customers in cluster “0” have purchased the least recently and have a low frequency and a lot of outliers on spend. There are outliers in regards to number of purchases and cost of these purchases, however, the average customer in this cluster spends little, infrequently and has not made a purchase recently, for these reasons it would be best to avoid marketing towards these customers.
+
+![](images/freq_clust.png)
+
+Customers in cluster “1” have mostly made purchases within the last 60 days, have made fewer total purchases and have lower spending. There are outliers in spending and frequency, however, the data indicates that customers within this cluster are probably new customers. From a business perspective, this would be an attractive segment to market towards as it could lead to an increased consumer base.
+
+![](images/mont_clust.png)
+
+Cluster “2” has a high total spend, and number of purchases and has made purchases most recently. Although there seem to be many outliers in recency of last purchase, the high spend and frequency indicate these are customers familiar with the business. This would be a good segment to focus marketing on as they are already accustomed to the business and will be easy to entice to make recurring purchases.
