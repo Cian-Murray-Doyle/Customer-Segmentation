@@ -73,7 +73,7 @@ When using `online_sales.describe()` we see that some of our data is stored inco
 
 To detect outliers we will use `online_sales.describe()`. In our example, we can see there are negative values for “Quantity” and values of 0 for “UnitPrice”, as we know these are not possible values and therefore need to be removed.
 
-Currently with our data we do not have enough context to begin removing outliers using IQR or Z-Scores, we will remove these later on in the process.
+Currently, with our data we do not have enough context to begin removing outliers using IQR or Z-Scores, we will remove these later on in the process.
 
 ### Feature Engineering
 
@@ -203,7 +203,7 @@ plt.show()
 
 The optimal number of clusters is the point where the graph creates an "elbow", in our scenario 2 clusters would be too few so we will take 3 as our number of clusters.
 
-Next we will add the labels of each cluster back to our RFM table and visualise our clusters.
+Next, we will add the labels of each cluster back to our RFM table and visualise our clusters.
 
 ![](images/rfm_cluster.png)
 
@@ -223,4 +223,4 @@ Customers in cluster “1” have mostly made purchases within the last 60 days,
 
 ![](images/mont_clust.png)
 
-Cluster “2” has a high total spend, and number of purchases and has made purchases most recently. Although there seem to be many outliers in recency of last purchase, the high spend and frequency indicate these are customers familiar with the business. This would be a good segment to focus marketing on as they are already accustomed to the business and will be easy to entice to make recurring purchases.
+Cluster “2” has a high total spend, and number of purchases and has made purchases most recently. Although there seem to be many outliers in the recency of the last purchase, the high spending and frequency indicate these are customers familiar with the business. This would be a good segment to focus marketing on as they are already accustomed to the business and will be easy to entice to make recurring purchases.
